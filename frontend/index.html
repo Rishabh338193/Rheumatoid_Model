@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rheumatoid Arthritis Prediction</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header>
+            <h1>🏥 Rheumatoid Arthritis Prediction System</h1>
+            <p class="subtitle">AutoImmune Disease Prediction Model</p>
+        </header>
+
+        <!-- Main Content -->
+        <div class="content-wrapper">
+            <!-- Input Form -->
+            <div class="card form-card">
+                <h2>Patient Information</h2>
+                <form id="predictionForm">
+                    <!-- Demographics -->
+                    <div class="form-section">
+                        <h3>Demographics</h3>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="age">Age</label>
+                                <input type="number" id="age" name="Age" required min="18" max="120" 
+                                       placeholder="Enter age">
+                            </div>
+                            <div class="form-group">
+                                <label for="gender">Gender</label>
+                                <select id="gender" name="Gender" required>
+                                    <option value="">Select</option>
+                                    <option value="Male">Male</option>
+                                    <option value="Female">Female</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Clinical Symptoms -->
+                    <div class="form-section">
+                        <h3>Clinical Symptoms</h3>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="stiffness">Morning Stiffness (minutes)</label>
+                                <input type="number" id="stiffness" name="Morning_Stiffness_Duration" 
+                                       required min="0" max="300" placeholder="0-300">
+                            </div>
+                            <div class="form-group">
+                                <label for="jointPain">Joint Pain Score</label>
+                                <input type="number" id="jointPain" name="Joint_Pain_Score" 
+                                       required min="0" max="10" step="1" placeholder="0-10">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="swollenJoints">Swollen Joint Count</label>
+                                <input type="number" id="swollenJoints" name="Swollen_Joint_Count" 
+                                       required min="0" max="28" placeholder="0-28">
+                            </div>
+                            <div class="form-group">
+                                <label for="fatigue">Fatigue Score</label>
+                                <input type="number" id="fatigue" name="Fatigue_Score" 
+                                       required min="0" max="10" step="1" placeholder="0-10">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Laboratory Tests -->
+                    <div class="form-section">
+                        <h3>Laboratory Tests</h3>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="rf">Rheumatoid Factor (IU/ml)</label>
+                                <input type="number" id="rf" name="Rheumatoid_Factor" 
+                                       required min="0" step="0.1" placeholder="0-200">
+                            </div>
+                            <div class="form-group">
+                                <label for="antiCCP">Anti-CCP (U/ml)</label>
+                                <input type="number" id="antiCCP" name="Anti_CCP" 
+                                       required min="0" step="0.1" placeholder="0-300">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="esr">ESR (mm/hr)</label>
+                                <input type="number" id="esr" name="ESR" 
+                                       required min="0" step="0.1" placeholder="0-100">
+                            </div>
+                            <div class="form-group">
+                                <label for="crp">CRP (mg/L)</label>
+                                <input type="number" id="crp" name="CRP" 
+                                       required min="0" step="0.1" placeholder="0-50">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Medical History -->
+                    <div class="form-section">
+                        <h3>Medical History</h3>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="familyHistory">Family History of RA</label>
+                                <select id="familyHistory" name="Family_History" required>
+                                    <option value="">Select</option>
+                                    <option value="Yes">Yes</option>
+                                    <option value="No">No</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="smoking">Smoking Status</label>
+                                <select id="smoking" name="Smoking_Status" required>
+                                    <option value="">Select</option>
+                                    <option value="Yes">Yes</option>
+                                    <option value="No">No</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Buttons -->
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-primary" id="predictBtn">
+                            🔍 Predict RA Risk
+                        </button>
+                        <button type="button" class="btn btn-secondary" id="resetBtn">
+                            🔄 Reset Form
+                        </button>
+                        <button type="button" class="btn btn-sample" id="sampleBtn">
+                            📋 Load Sample Data
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Results -->
+            <div class="card result-card" id="resultCard" style="display: none;">
+                <h2>Prediction Results</h2>
+                
+                <!-- Main Result -->
+                <div class="result-main" id="resultMain">
+                    <div class="result-icon" id="resultIcon">⏳</div>
+                    <div class="result-text" id="resultText">Processing...</div>
+                    <div class="result-confidence" id="resultConfidence"></div>
+                </div>
+
+                <!-- Risk Level -->
+                <div class="risk-level" id="riskLevel" style="display: none;">
+                    <h3>Risk Assessment</h3>
+                    <div class="risk-badge" id="riskBadge"></div>
+                    <div class="risk-meter">
+                        <div class="risk-meter-fill" id="riskMeterFill"></div>
+                    </div>
+                    <div class="probability-text" id="probabilityText"></div>
+                </div>
+
+                <!-- Explanation -->
+                <div class="explanation" id="explanation" style="display: none;">
+                    <h3>Analysis & Key Factors</h3>
+                    <div class="key-factors" id="keyFactors"></div>
+                    
+                    <h3>Recommendations</h3>
+                    <div class="recommendations" id="recommendations"></div>
+                </div>
+
+                <!-- Feature Importance -->
+                <div class="feature-importance" id="featureImportance" style="display: none;">
+                    <h3>Most Important Features</h3>
+                    <div class="features-list" id="featuresList"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer>
+            <p>Powered by Random Forest Machine Learning | Educational Project</p>
+            <p>Model Accuracy: <span id="modelAccuracy">Loading...</span></p>
+        </footer>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loadingOverlay" style="display: none;">
+        <div class="spinner"></div>
+        <p>Processing prediction...</p>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
