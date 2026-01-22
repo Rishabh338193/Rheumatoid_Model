@@ -55,6 +55,15 @@ def run_project():
         preexec_fn=os.setsid if hasattr(os, 'setsid') else None
     )
     
+    # Start static HTML server for frontend/index.html (serves at http://localhost:8080)
+    print("🌐 Starting static HTML server (frontend) on port 8080...")
+    static_proc = subprocess.Popen(
+        [sys.executable, "-m", "http.server", "8080", "--directory", "frontend"],
+        stdout=subprocess.DEVNULL,
+        stderr=subprocess.DEVNULL,
+        preexec_fn=os.setsid if hasattr(os, 'setsid') else None
+    )
+    
     time.sleep(3)
     
     print()
@@ -78,9 +87,13 @@ def run_project():
         if hasattr(os, 'setsid'):
             os.killpg(os.getpgid(backend_proc.pid), sig_module.SIGTERM)
             os.killpg(os.getpgid(frontend_proc.pid), sig_module.SIGTERM)
+            if 'static_proc' in locals():
+                os.killpg(os.getpgid(static_proc.pid), sig_module.SIGTERM)
         else:
             backend_proc.terminate()
             frontend_proc.terminate()
+            if 'static_proc' in locals():
+                static_proc.terminate()
         time.sleep(1)
         print("✓ Project stopped.")
         sys.exit(0)

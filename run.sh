@@ -47,6 +47,13 @@ cd ..
 
 sleep 3
 
+# Start static HTML server (frontend) on port 8080
+echo -e "${YELLOW}Starting static HTML server (frontend) on port 8080...${NC}"
+cd frontend
+python3 -m http.server 8080 &
+STATIC_PID=$!
+cd ..
+
 echo ""
 echo "=========================================="
 echo -e "${GREEN}✅ Project is Running!${NC}"

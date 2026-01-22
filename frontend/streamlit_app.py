@@ -8,6 +8,7 @@ import requests
 import pandas as pd
 import plotly.graph_objects as go
 import json
+import os
 
 # Page Configuration
 st.set_page_config(
@@ -38,8 +39,9 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-# API Configuration
-API_BASE_URL = 'http://127.0.0.1:5001'
+# API Configuration - Support both local and cloud deployment
+# Use environment variable if set, otherwise default to localhost
+API_BASE_URL = os.getenv('API_BASE_URL', 'http://127.0.0.1:5001')
 
 # Header
 st.markdown('<h1 class="main-header">🏥 Rheumatoid Arthritis Prediction System</h1>', unsafe_allow_html=True)
